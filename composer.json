@@ -1,1 +1,14 @@
-{}
+{
+    "name": "acer/meetings-rest",
+    "authors": [
+        {
+            "name": "nataliapiekos",
+            "email": "natalia1.piekos@gmail.com"
+        }
+    ],
+    "require": {
+        "slim/slim": "^3",
+        "ext-json": "*",
+        "ext-sqlite3": "*"
+    }
+}
