@@ -74,15 +74,32 @@ $app->post(
     		exit();
 		 }
 		 $requestData = $request->getParsedBody();
-		 if (!isset($requestData['firstname']) || !isset($requestData['lastname'])) {
+		if (!isset($requestData['firstname']) || !isset($requestData['lastname'])) {
 			return $response->withStatus(418)->withJason(['message'=> 'Lastname and firstname are required']);
-		 }
+		 }else
 		 $sql =  "INSERT INTO participant (firstname, lastname) VALUES('$requestData[firstname]', '$requestData[lastname]');";
 		 $db->query($sql);
 		return $response->withStatus(201);
     }
 );
-
+$app->get(
+    '/api/participants/{id}',
+    function (Request $request, Response $response, array $args) {
+		$db = new MyDB();
+		if(!$db) {
+			echo $db->lastErrorMsg();
+		   exit();
+		}
+        $sql = "SELECT * FROM participant WHERE id = $args[id]"; // beware! SQL Injection Attack
+        $ret = $db->query($sql);
+        $participant = $ret->fetchArray(SQLITE3_ASSOC);
+        if ($participant) {
+            return $response->withJson($participant);
+        } else {
+            return $response->withStatus(404)->withJson(['error' => 'Such participant does not exist.']);
+        }
+    }
+);
 /*$app->post(
 	'/api/participants',
     function (Request $request, Response $response, array $args) {
