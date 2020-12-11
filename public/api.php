@@ -100,19 +100,20 @@ $app->get(
         }
     }
 );
-/*$app->post(
-	'/api/participants',
-    function (Request $request, Response $response, array $args) {
- 		$db = new MyDB();
- 		if(!$db) {
- 			echo $db->lastErrorMsg();
-    		exit();
-		 }
-		 $requestData = $request->getParsedBody();
-		 $sql =  "DELETE FROM participant WHERE id=2;";
-		 $db->query($sql);
-		return $response->withStatus(201);
-    }
-);*/
 
+$app->delete(
+    '/api/participants/{id}',
+    function (Request $request, Response $response, array $args)  {
+		$db = new MyDB();
+		if(!$db) {
+			echo $db->lastErrorMsg();
+		   exit();
+		}
+        $sql = "DELETE FROM participant WHERE id = :flower";
+        $stmt = $db->prepare($sql);
+        $stmt->bindValue('flower', $args['id']);
+        $ret = $stmt->execute();
+        return $response->withStatus(204);
+    }
+);
 $app->run();
