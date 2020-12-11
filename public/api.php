@@ -75,7 +75,7 @@ $app->post(
 		 }
 		 $requestData = $request->getParsedBody();
 		if (!isset($requestData['firstname']) || !isset($requestData['lastname'])) {
-			return $response->withStatus(418)->withJason(['message'=> 'Lastname and firstname are required']);
+			return $response->withStatus(418)->withJson(['message'=> 'Lastname and firstname are required']);
 		 }else
 		 $sql =  "INSERT INTO participant (firstname, lastname) VALUES('$requestData[firstname]', '$requestData[lastname]');";
 		 $db->query($sql);
