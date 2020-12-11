@@ -65,4 +65,37 @@ $app->get(
     }
 );
 
+$app->post(
+	'/api/participants',
+    function (Request $request, Response $response, array $args) {
+ 		$db = new MyDB();
+ 		if(!$db) {
+ 			echo $db->lastErrorMsg();
+    		exit();
+		 }
+		 $requestData = $request->getParsedBody();
+		 if (!isset($requestData['firstname']) || !isset($requestData['lastname'])) {
+			return $response->withStatus(418)->withJason(['message'=> 'Lastname and firstname are required']);
+		 }
+		 $sql =  "INSERT INTO participant (firstname, lastname) VALUES('$requestData[firstname]', '$requestData[lastname]');";
+		 $db->query($sql);
+		return $response->withStatus(201);
+    }
+);
+
+/*$app->post(
+	'/api/participants',
+    function (Request $request, Response $response, array $args) {
+ 		$db = new MyDB();
+ 		if(!$db) {
+ 			echo $db->lastErrorMsg();
+    		exit();
+		 }
+		 $requestData = $request->getParsedBody();
+		 $sql =  "DELETE FROM participant WHERE id=2;";
+		 $db->query($sql);
+		return $response->withStatus(201);
+    }
+);*/
+
 $app->run();
